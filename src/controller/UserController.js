@@ -1,5 +1,6 @@
 const connection = require('../database/connection');
 const bcrypt = require('bcrypt');
+const generateToken = require('../utils/generateToken');
 
 module.exports = {
   async index(request, response) {
@@ -33,7 +34,7 @@ module.exports = {
     }
     user.password = undefined;
 
-    return response.json({ user });
+    return response.json({ user, token: generateToken({ id: user.id }) });
   },
 
   async create(request, response) {
