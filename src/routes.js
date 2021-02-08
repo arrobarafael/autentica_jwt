@@ -8,4 +8,6 @@ routes.get('/user', UserController.index);
 routes.get('/user/:id', UserController.show);
 routes.post('/user', UserController.create);
 
+routes.post('/autenticar', UserController.authenticate);
+
 module.exports = routes;

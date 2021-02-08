@@ -22,7 +22,18 @@ module.exports = {
   async authenticate(request, response) {
     const { email, password } = request.body;
 
-    return response.json({ msg: 'Autenticou usuário' });
+    const user = await connection('users').where('email', email).first();
+
+    if (!user) {
+      return response.status(401).json({ error: 'Incorrect email' });
+    }
+
+    if (!(await bcrypt.compare(password, user.password))) {
+      return response.status(401).json({ error: 'Incorrect password' });
+    }
+    user.password = undefined;
+
+    return response.json({ user });
   },
 
   async create(request, response) {
